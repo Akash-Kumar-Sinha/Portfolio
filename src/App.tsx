@@ -1,18 +1,20 @@
-import DesktopSidebar from "./Components/DesktopSidebar/DesktopSidebar"
+import { Routes, Route } from "react-router-dom"
+import Home from "./Components/Home"
+import NoRoute from "./utils/NoRoute/NoRoute"
 
 function App() {
 
   return (
-    <h1 className="text-3xl bg-red-400 font-bold underline">
+    <Routes>
       {/* 
       <Header/>
       <DesktopSidebar/>
       <SideBar/>
       <MobileSidebar/>
-      */}
-      Hello world!
-      <DesktopSidebar/>
-    </h1>
+    */}
+    <Route path="/" element={<Home />}/>
+    <Route path="*" element={<NoRoute/>}/>
+    </Routes>
   )
 }
 
