@@ -1,31 +1,23 @@
 import useRoutes from "../../../utils/Hooks/useRoutes";
 import DesktopItem from "./DesktopItem";
 
-const DesktopSidebar = () => {
-
+const DesktopSidebar = ({
+  handleClick,
+}: {
+  handleClick: (label: string) => void;
+}) => {
   const routes = useRoutes();
   return (
-    <div>
-      <div
-        className="
-        hidden 
-        lg:fixed
-        lg;z-100
-        lg:flex
-        lg:flex-col
-        items-center
-        justify-center
-    "
-      > 
-        <nav className="flex flex-col justify-between">
-          <ul className="flex flex-col justify-center h-screen">
+    <div className="-mt-8 hidden fixed lg:block h-full">
+      <div className="flex h-full items-center gap-12">
+        <nav>
+          <ul className="flex flex-col gap-2 cursor-pointer">
             {routes.map((item) => (
               <DesktopItem
                 key={item.label}
                 label={item.label}
-                href={item.href}
                 icon={item.icon}
-                active={item.active}
+                handleClick={() => handleClick(item.label)}
               />
             ))}
           </ul>

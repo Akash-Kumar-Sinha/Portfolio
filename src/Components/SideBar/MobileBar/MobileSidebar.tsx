@@ -1,19 +1,19 @@
 import MobileItem from "./MobileItem";
+
 import useRoutes from "../../../utils/Hooks/useRoutes";
 
-const MobileBar = () => {
+const MobileBar = ({ handleClick }: { handleClick: (label: string) => void }) => {
   const routes = useRoutes();
   return (
-    <div className="fixed left-0 top-0 h-full bg-[#F0F8FF] border-r-2  w-64">
+    <div className="fixed left-0 top-0 h-full bg-zinc-800 border-r-2  w-fit pr-10">
       <nav className="flex flex-col">
         <ul className="flex flex-col pt-12">
           {routes.map((item) => (
             <MobileItem
               key={item.label}
               label={item.label}
-              href={item.href}
               icon={item.icon}
-              active={item.active}
+              handleClick={() => handleClick(item.label)}
             />
           ))}
         </ul>

@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model EmailVerification {
+  id                String  @id @default(uuid())
+  email             String  @unique
+  verificationToken String
+  verified          Boolean @default(false)
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  email    String @unique
+  username String @unique
+  password String
+  likes    Int    @default(0)
+
+  projects Projects[]
+  sill     Skills[]
+  about    About?
+  links    Link[]
+}
+
+model Projects {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  image       String
+  link        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  adminId String
+  Admin   Admin  @relation(fields: [adminId], references: [id])
+}
+
+model Skills {
+  id        String   @id @default(cuid())
+  name      String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  adminId String
+  Admin   Admin  @relation(fields: [adminId], references: [id])
+}
+
+model About {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  adminId String @unique
+  Admin   Admin  @relation(fields: [adminId], references: [id])
+}
+
+model Link {
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  icon      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  adminId String
+  Admin   Admin  @relation(fields: [adminId], references: [id])
+}
