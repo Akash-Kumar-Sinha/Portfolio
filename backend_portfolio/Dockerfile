@@ -2,14 +2,12 @@ FROM node:20
 
 WORKDIR /app
 
-COPY package* .
-COPY ./prisma .
+COPY package* ./
+COPY ./prisma ./
 
 RUN npm install
 
 COPY . .
-
-RUN npx prisma generate
 
 ENV NODE_ENV=production
 EXPOSE 3000

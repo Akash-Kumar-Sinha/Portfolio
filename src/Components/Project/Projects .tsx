@@ -1,28 +1,34 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { motion } from "framer-motion";
 
-import UseProjectData from "./UseProjectData";
 import ProjectCard from "./ProjectCard";
+import useProjects from "../../utils/Hooks/useProjects";
+import Loading from "../../utils/Loading";
 
 const Projects = () => {
-  const projectData = UseProjectData();
+
+  const { projects, loading, error } = useProjects();
   const divRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextProject = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % projectData.length);
-  };
+  const nextProject = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
+  }, [projects.length]);
 
-  const goToProject = (index: number) => {
+  const goToProject = useCallback((index: number) => {
     setCurrentIndex(index);
-  };
+  }, []);
+
+  if (loading || error) return <Loading/>
+
+  if (projects.length === 0) return <div>No projects available.</div>;
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6">
       <div className="flex flex-col lg:flex-row items-center gap-4">
         <motion.div
-          key={projectData[currentIndex].label}
+          key={projects[currentIndex].title}
           ref={divRef}
           className="flex flex-col items-center justify-center w-full"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -31,14 +37,14 @@ const Projects = () => {
           transition={{ duration: 0.5 }}
         >
           <ProjectCard
-            imgLink={projectData[currentIndex].imgLink}
-            icon={projectData[currentIndex].icon}
-            label={projectData[currentIndex].label}
-            description={projectData[currentIndex].description}
+            imgLink={projects[currentIndex].image}
+            icon={projects[currentIndex].icon}
+            label={projects[currentIndex].title}
+            description={projects[currentIndex].description || ""}
             divRef={divRef}
           />
           <div className="flex mt-6 space-x-3">
-            {projectData.map((_, index) => (
+            {projects.map((_, index) => (
               <motion.button
                 key={index}
                 onClick={() => goToProject(index)}
@@ -46,6 +52,7 @@ const Projects = () => {
                   index === currentIndex ? "bg-white" : "bg-gray-300"
                 }`}
                 whileHover={{ scale: 1.2 }}
+                aria-label={`Go to project ${index + 1}`}
               />
             ))}
           </div>
@@ -53,6 +60,7 @@ const Projects = () => {
         <button
           onClick={nextProject}
           className="ml-3 p-3 rounded-full bg-[#0ff] text-white shadow-lg bg-opacity-80 hover:bg-opacity-100 transition"
+          aria-label="Next project"
         >
           <MdOutlineKeyboardArrowRight size={24} />
         </button>
@@ -60,5 +68,6 @@ const Projects = () => {
     </div>
   );
 };
+
 
 export default Projects;

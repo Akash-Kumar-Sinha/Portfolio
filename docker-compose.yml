@@ -1,11 +1,22 @@
 version: "3.8"
 services:
+  backend:
+    build:
+      context: ./backend_portfolio
+    container_name: backend_portfolio
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend_portfolio/.env
+
   frontend:
-    build: 
+    build:
       context: ./
     container_name: frontend_aks_portfolio
     ports:
       - "5173:5173"
+    env_file:
+      - ./.env
 
 volumes:
   postgres_data:

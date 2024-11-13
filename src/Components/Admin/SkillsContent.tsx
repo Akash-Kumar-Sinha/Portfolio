@@ -103,6 +103,7 @@ const SkillsContent = () => {
 
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex flex-col w-full md:w-2/5 space-y-2">
+          <p>https://reactsvgicons.com/</p>
           <h2 className="text-lg font-medium">Add / Edit Skill</h2>
 
           <input

@@ -55,10 +55,10 @@ const Home = () => {
         toggleMenu={toggleMenu}
         menuOpen={menuOpen}
       />
-      <div className="flex flex-1 relative gap-4">
+      <div className="flex flex-1 relative gap-4 mb-2">
         <DesktopSidebar handleClick={handleClick} />
 
-        <div className="bg-zinc-900 lg:ml-32 w-full mx-2 mb-2 flex flex-col lg:flex-row justify-center items-center rounded-xl">
+        <div className="bg-zinc-900 lg:ml-32 w-full h-full overflow-auto mx-2 mb-2 flex flex-col lg:flex-row justify-center items-center rounded-xl">
           {pathName === Path.HOME && <Intro />}
 
           {pathName === Path.PROJECTS && <Projects />}
