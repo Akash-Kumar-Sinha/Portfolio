@@ -62,7 +62,7 @@ const Projects = () => {
         </motion.div>
         <button
           onClick={nextProject}
-          className="ml-3 p-3 rounded-full bg-[#593CA1] text-white shadow-xl bg-opacity-80 hover:bg-opacity-100 transition-transform transform hover:scale-105"
+          className="ml-3 p-3 rounded-full bg-[#f6671b] text-white shadow-lg shadow-black bg-opacity-80 hover:bg-opacity-100 transition-transform transform hover:scale-105"
           aria-label="Next project"
         >
           <MdOutlineKeyboardArrowRight size={24} />

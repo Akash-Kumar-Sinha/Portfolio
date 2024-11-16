@@ -41,7 +41,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           className="w-fit object-contain transition-transform duration-300 ease-in-out hover:scale-110 rounded-lg"
         />
       </div>
-      <Link to={link}>
+      <Link to={link} target="_blank">
         <div className="flex items-center justify-center mb-2">
           <div className="text-[#f6671b] text-2xl transition-transform duration-300 transform hover:scale-125">
             <div dangerouslySetInnerHTML={{ __html: icon }} />
@@ -56,7 +56,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <p className="mt-1 text-sm text-[#F5F5F5] text-center font-light transition-opacity duration-300 opacity-80 hover:opacity-100">
         {description}
       </p>
-      
+
       {githubLink && (
         <a
           href={githubLink}

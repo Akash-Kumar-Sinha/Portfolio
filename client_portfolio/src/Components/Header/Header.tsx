@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
         </div>
-        <button onClick={handleContactClick} className="text-[#F6671B] text-xl font-semibold tracking-wide px-4  border-b-2 border-[#F6671B] transition-all duration-300 shadow-md shadow-[#F5F5F5] hover:shadow-lg">
+        <button onClick={handleContactClick} className="text-[#F6671B] text-xl font-semibold tracking-wide px-4 rounded-lg border-b-2 border-[#F6671B] transition-all duration-300 shadow-md shadow-[#F5F5F5] hover:shadow-lg">
           Contact
         </button>
       </span>
