@@ -11,10 +11,11 @@ if (!SERVER_URL) {
 interface Project {
   id: string;
   title: string;
-  description?: string;
+  description: string;
   image: string;
   link: string;
   icon: string;
+  githubLink?: string;
 }
 
 const useProjects = () => {

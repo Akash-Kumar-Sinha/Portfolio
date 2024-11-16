@@ -17,7 +17,7 @@ const getProjects = async (req: CustomRequest, res: Response) => {
 
 const addProjects = async (req: CustomRequest, res: Response) => {
   const { adminId } = req.user || {};
-  const { image, title, description, link, icon } = req.body;
+  const { image, title, description, link, icon, githubLink } = req.body;
 
   if (!adminId) {
     res.status(401).json({ error: "Unauthorized" });
@@ -37,6 +37,7 @@ const addProjects = async (req: CustomRequest, res: Response) => {
         image,
         icon,
         link,
+        githubLink,
         adminId,
       },
     });
@@ -50,7 +51,7 @@ const addProjects = async (req: CustomRequest, res: Response) => {
 const editProjects = async (req: CustomRequest, res: Response) => {
   console.log("editProjects");
   const { id } = req.params;
-  const { image, title, description, link, icon } = req.body;
+  const { image, title, description, link, icon, githubLink } = req.body;
   const { adminId } = req.user || {};
 
   if (!adminId) {
@@ -73,6 +74,7 @@ const editProjects = async (req: CustomRequest, res: Response) => {
         icon,
         description,
         image,
+        githubLink,
         link,
       },
     });

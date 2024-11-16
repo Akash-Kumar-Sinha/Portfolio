@@ -41,8 +41,9 @@ const Projects = () => {
             imgLink={projects[currentIndex].image}
             icon={projects[currentIndex].icon}
             label={projects[currentIndex].title}
-            description={projects[currentIndex].description || ""}
+            description={projects[currentIndex].description}
             link={projects[currentIndex].link}
+            githubLink={projects[currentIndex].githubLink || ""}
             divRef={divRef}
           />
           <div className="flex mt-6 space-x-3">
