@@ -7,7 +7,6 @@ import useProjects from "../../utils/Hooks/useProjects";
 import Loading from "../../utils/Loading";
 
 const Projects = () => {
-
   const { projects, loading, error } = useProjects();
   const divRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,10 +19,9 @@ const Projects = () => {
     setCurrentIndex(index);
   }, []);
 
-  if (loading || error) return <Loading/>
+  if (loading || error) return <Loading />;
 
   if (projects.length === 0) return <div>No projects available.</div>;
-
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6">
@@ -70,8 +68,6 @@ const Projects = () => {
       </div>
     </div>
   );
-  
 };
-
 
 export default Projects;
