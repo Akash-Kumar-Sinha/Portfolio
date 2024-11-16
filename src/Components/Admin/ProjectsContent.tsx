@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PORTFOLIO_TOKEN } from "../../utils/types";
 import Loading from "../../utils/Loading";
 import useProjects from "../../utils/Hooks/useProjects";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env
+  .VITE_APP_CLOUDINARY_UPLOAD_PRESET;
+const CLOUDINARY_URL = import.meta.env.VITE_APP_CLOUDINARY_URL;
 
 if (!SERVER_URL) {
   throw new Error("Server URL not found");
@@ -29,7 +32,25 @@ const ProjectsContent: React.FC = () => {
     icon: "",
   });
   const [editId, setEditId] = useState<string | null>(null);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [imageToEdit, setImageToEdit] = useState<string | null>(null);
   const token = localStorage.getItem(PORTFOLIO_TOKEN);
+
+  useEffect(() => {
+    if (editId && projects.length > 0) {
+      const projectToEdit = projects.find((project) => project.id === editId);
+      if (projectToEdit) {
+        setFormData({
+          title: projectToEdit.title,
+          description: projectToEdit.description || "",
+          image: projectToEdit.image,
+          link: projectToEdit.link,
+          icon: projectToEdit.icon || "",
+        });
+        setImageToEdit(projectToEdit.image);
+      }
+    }
+  }, [editId, projects]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,7 +61,34 @@ const ProjectsContent: React.FC = () => {
 
   const resetForm = () => {
     setFormData({ title: "", description: "", image: "", link: "", icon: "" });
+    setImageToEdit(null);
     setEditId(null);
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setLoadingImage(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+    try {
+      const response = await axios.post(CLOUDINARY_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data && response.data.secure_url) {
+        setFormData((prevData) => ({
+          ...prevData,
+          image: response.data.secure_url,
+        }));
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setLoadingImage(false);
+    }
   };
 
   const addProject = async () => {
@@ -63,9 +111,14 @@ const ProjectsContent: React.FC = () => {
     if (!editId) return;
 
     try {
+      const updatedFormData =
+        imageToEdit === formData.image
+          ? formData
+          : { ...formData, image: formData.image };
+
       const response = await axios.put(
         `${SERVER_URL}/projects/${editId}`,
-        formData,
+        updatedFormData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -116,7 +169,7 @@ const ProjectsContent: React.FC = () => {
             Add / Edit Project
           </h2>
 
-          {["title", "description", "image", "link", "icon"].map((field) => (
+          {["title", "description", "link", "icon"].map((field) => (
             <input
               key={field}
               type="text"
@@ -129,6 +182,30 @@ const ProjectsContent: React.FC = () => {
               className="w-full bg-zinc-900 text-sm p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             />
           ))}
+
+          <div className="w-full">
+            <input
+              type="file"
+              onChange={(e) =>
+                e.target.files && handleImageUpload(e.target.files[0])
+              }
+              className="w-full bg-zinc-900 text-sm p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            />
+            {loadingImage && (
+              <p className="text-yellow-500">Uploading image...</p>
+            )}
+          </div>
+
+          {imageToEdit && !formData.image && (
+            <div>
+              <img
+                src={imageToEdit}
+                alt="Project"
+                className="w-32 h-32 object-cover rounded-md"
+              />
+              <p className="text-gray-500 text-sm">Current Image</p>
+            </div>
+          )}
 
           <button
             onClick={handleFormSubmit}
@@ -159,18 +236,18 @@ const ProjectsContent: React.FC = () => {
                     </div>
                     <div>
                       {project.image && (
-                        <p className="text-blue-500 text-sm hover:text-blue-600 transition">
-                          {project.image}
+                        <p className="text-blue-500 text-sm hover:text-blue-600 transition break-all">
+                          {project.image.slice(0, 30)}...
                         </p>
                       )}
                       {project.link && (
-                        <p className="text-blue-500 text-sm hover:text-blue-600 transition">
-                          {project.link}
+                        <p className="text-blue-500 text-sm hover:text-blue-600 transition break-all">
+                          {project.link.slice(0, 30)}...
                         </p>
                       )}
                       {project.icon && (
                         <p className="text-blue-500 text-sm hover:text-blue-600 transition">
-                          {project.icon}
+                          {project.icon.slice(0, 30)}...
                         </p>
                       )}
                     </div>
@@ -188,13 +265,13 @@ const ProjectsContent: React.FC = () => {
                           icon: project.icon || "",
                         });
                       }}
-                      className="px-4 py-2 text-yellow-500 hover:text-yellow-600 transition duration-200"
+                      className="px-4 py-2 text-yellow-500 hover:bg-yellow-500 hover:text-white rounded-md transition"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => deleteProject(project.id)}
-                      className="px-4 py-2 text-red-500 hover:text-red-600 transition duration-200"
+                      className="px-4 py-2 text-red-500 hover:bg-red-500 hover:text-white rounded-md transition"
                     >
                       Delete
                     </button>

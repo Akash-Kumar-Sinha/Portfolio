@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { PiCirclesThreePlusLight } from "react-icons/pi";
-import { AiFillLike } from "react-icons/ai";
-import axios from "axios";
 
 import MobileSidebar from "../SideBar/MobileBar/MobileSidebar";
 
@@ -9,93 +7,41 @@ interface HeaderProps {
   toggleMenu: () => void;
   handleClick: (label: string) => void;
   menuOpen: boolean;
-}
-
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
-
-if (!SERVER_URL) {
-  throw new Error("Server URL not found");
+  handleContactClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   toggleMenu,
   handleClick,
   menuOpen,
+  handleContactClick
 }) => {
-  const [likeCount, setLikeCount] = useState(0);
-  const [likeClicked, setLikeClicked] = useState(false);
-
-  const onClickLike = async () => {
-    try {
-      await axios.put(`${SERVER_URL}/likes`);
-      setLikeClicked(true);
-    } catch (error) {
-      console.error("Error updating likes:", error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchLikes = async () => {
-      try {
-        const res = await axios.get(`${SERVER_URL}/likes`);
-        if (res.status === 200) {
-          setLikeCount(res.data.likes);
-        }
-      } catch (error) {
-        console.error("Error fetching likes:", error);
-      }
-    };
-
-    fetchLikes();
-    const intervalId = setInterval(fetchLikes, 5000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    if (likeClicked) {
-      const timer = setTimeout(() => setLikeClicked(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [likeClicked]);
-
   return (
-    <div className="bg-zinc-950 fixed top-0 left-0 w-full z-10 lg:px-8 px-4">
-      <div className="flex justify-between items-center p-4">
-        <div className="hidden lg:block w-full">
-          <div className="w-full flex justify-between">
-            <span className="text-xl font-semibold tracking-wider text-[#f0f8ff]">
-              Akash Kumar Sinha
-            </span>
-            <div className="flex items-center justify-center">
-              <AiFillLike
-                onClick={onClickLike}
-                size={28}
-                className={`text-[#f0f8ff] hover:text-white transition-colors duration-300 ${
-                  likeClicked ? "animate-bounce" : ""
-                }`}
-              />
-              <span className="text-xs mt-2">{likeCount}</span>
+    <div className="bg-[#b6b6b6] fixed top-0 left-0 w-full z-10 px-2">
+      <span className="flex justify-between items-center p-2 lg:p-4 lg:px-12">
+        <div className="flex justify-between items-center ">
+          <div className="hidden lg:block w-full">
+            <div className="w-full flex justify-between">
+              <span className=" para_font  text-2xl font-extrabold tracking-wider">
+                Akash Kumar Sinha
+              </span>
             </div>
           </div>
-        </div>
-        <div className="lg:hidden flex justify-between w-full md:px-4">
-          <button onClick={toggleMenu} className="z-10">
-            <PiCirclesThreePlusLight size={28} className="text-[#f0f8ff]" />
-          </button>
-          <div>
-            <AiFillLike
-              onClick={onClickLike}
-              size={28}
-              className={`text-[#f0f8ff] hover:text-white transition-colors duration-300 ${
-                likeClicked ? "animate-bounce" : ""
-              }`}
-            />
-            {likeCount}
+          <div className="lg:hidden flex justify-between w-full md:px-4">
+            <button
+              onClick={toggleMenu}
+              className="z-10 p-2 bg-[#F6671B] text-white rounded-full hover:bg-[#e55a1a] transition-colors"
+            >
+              <PiCirclesThreePlusLight size={28} />
+            </button>
           </div>
         </div>
-      </div>
-      <hr className="w-full h-1 bg-gradient-to-r lineColor" />
+        <button onClick={handleContactClick} className="text-[#F6671B] text-xl font-semibold tracking-wide px-4  border-b-2 border-[#F6671B] transition-all duration-300 shadow-md shadow-[#F5F5F5] hover:shadow-lg">
+          Contact
+        </button>
+      </span>
+
+      <hr className="w-full h-1 bg-gradient-to-r from-[#f6671b] to-[#e55a1a] lineColor" />
       {menuOpen && <MobileSidebar handleClick={handleClick} />}
     </div>
   );

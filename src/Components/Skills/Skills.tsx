@@ -12,12 +12,12 @@ const Skills = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-start px-4 py-6"
+      className="flex flex-col items-center justify-start px-4 py-6 rounded-xl shadow-lg"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
     >
-      <h2 className="text-4xl font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500 mb-8">
+      <h2 className="text-4xl font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FF6F61] to-[#D4A5A5] mb-8">
         Skills
       </h2>
       <motion.div
@@ -49,6 +49,7 @@ const Skills = () => {
       </motion.div>
     </motion.div>
   );
+  
 };
 
 export default Skills;

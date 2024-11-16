@@ -24,9 +24,10 @@ const Projects = () => {
 
   if (projects.length === 0) return <div>No projects available.</div>;
 
+
   return (
     <div className="flex flex-col items-center justify-center h-full p-6">
-      <div className="flex flex-col lg:flex-row items-center gap-4">
+      <div className="flex flex-col lg:flex-row items-center gap-6">
         <motion.div
           key={projects[currentIndex].title}
           ref={divRef}
@@ -41,6 +42,7 @@ const Projects = () => {
             icon={projects[currentIndex].icon}
             label={projects[currentIndex].title}
             description={projects[currentIndex].description || ""}
+            link={projects[currentIndex].link}
             divRef={divRef}
           />
           <div className="flex mt-6 space-x-3">
@@ -49,7 +51,7 @@ const Projects = () => {
                 key={index}
                 onClick={() => goToProject(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? "bg-white" : "bg-gray-300"
+                  index === currentIndex ? "bg-[#F6671B]" : "bg-[#5A6D99]"
                 }`}
                 whileHover={{ scale: 1.2 }}
                 aria-label={`Go to project ${index + 1}`}
@@ -59,7 +61,7 @@ const Projects = () => {
         </motion.div>
         <button
           onClick={nextProject}
-          className="ml-3 p-3 rounded-full bg-[#0ff] text-white shadow-lg bg-opacity-80 hover:bg-opacity-100 transition"
+          className="ml-3 p-3 rounded-full bg-[#593CA1] text-white shadow-xl bg-opacity-80 hover:bg-opacity-100 transition-transform transform hover:scale-105"
           aria-label="Next project"
         >
           <MdOutlineKeyboardArrowRight size={24} />
@@ -67,6 +69,7 @@ const Projects = () => {
       </div>
     </div>
   );
+  
 };
 
 
