@@ -20,6 +20,7 @@ interface Project {
   image: string;
   link: string;
   icon: string;
+  githubLink?: string;
 }
 
 const ProjectsContent: React.FC = () => {
@@ -30,6 +31,7 @@ const ProjectsContent: React.FC = () => {
     image: "",
     link: "",
     icon: "",
+    githubLink: "",
   });
   const [editId, setEditId] = useState<string | null>(null);
   const [loadingImage, setLoadingImage] = useState(false);
@@ -169,19 +171,21 @@ const ProjectsContent: React.FC = () => {
             Add / Edit Project
           </h2>
 
-          {["title", "description", "link", "icon"].map((field) => (
-            <input
-              key={field}
-              type="text"
-              name={field}
-              placeholder={`Project ${
-                field.charAt(0).toUpperCase() + field.slice(1)
-              }`}
-              value={formData[field as keyof typeof formData]}
-              onChange={handleInputChange}
-              className="w-full bg-zinc-900 text-sm p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            />
-          ))}
+          {["title", "description", "link", "icon", "githubLink"].map(
+            (field) => (
+              <input
+                key={field}
+                type="text"
+                name={field}
+                placeholder={`Project ${
+                  field.charAt(0).toUpperCase() + field.slice(1)
+                }`}
+                value={formData[field as keyof typeof formData] || ""}
+                onChange={handleInputChange}
+                className="w-full bg-zinc-900 text-sm p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+            )
+          )}
 
           <div className="w-full">
             <input
@@ -248,6 +252,11 @@ const ProjectsContent: React.FC = () => {
                       {project.icon && (
                         <p className="text-blue-500 text-sm hover:text-blue-600 transition">
                           {project.icon.slice(0, 30)}...
+                        </p>
+                      )}
+                      {project.githubLink && (
+                        <p className="text-blue-500 text-sm hover:text-blue-600 transition break-all">
+                          {project.githubLink.slice(0, 30)}...
                         </p>
                       )}
                     </div>
